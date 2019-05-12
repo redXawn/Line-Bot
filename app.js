@@ -8,9 +8,8 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(logger('dev'));
-// env.config({path: envPath})
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', function (req, res) {
   res.send({message: 'Welcome'});
