@@ -71,7 +71,7 @@ app.post('/webhook', line.middleware(config), (req, res) => {
 }
 
 app.get('/', function (req, res) {
-  res.send({message: `Welcome ${process.env.CHANNEL_ACCESS_TOKEN}`});
+  res.send({message: `Welcome`});
 });
 app.listen(port, function () {
   console.log(`Example app listening on port ${port}!`);
