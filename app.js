@@ -2,18 +2,32 @@ const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const env = require('dotenv');
+const path = require('path');
 const line = require('@line/bot-sdk');
 
 const port = process.env.PORT || 3000;
 const app = express();
+
+const nodeEnv = process.env.NODE_ENV;
+let envPath
+if (nodeEnv === 'development') {
+  envPath = path.resolve('.env.development');
+} else if (nodeEnv === 'test') {
+  envPath = path.resolve('.env.test');
+} else if (nodeEnv === 'production') {
+  envPath = path.resolve('.env.production');
+}
+
+env.config({path: envPath})
+
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const config = {
-  channelAccessToken: '6yCTovUsWXRUOm0/3ftFKgXNDmu+7jIy/dT8j+XfiIHBO+6V5JBX1gBootjRC3oo9YuyqsBeaEOUD75HNxWYJcHqTw8fGWGAtIybP2Jy+NtSPoe2bfw0TAv8/gmYVhMBl+Nh+Wa7khE9cq3U0zt0ZQdB04t89/1O/w1cDnyilFU=',
-  channelSecret: 'aa2ab409e4a95fcd8b8c82d6a066d867',
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
+  channelSecret: process.env.CHANNEL_SECRET,
 };
 
 const client = new line.Client(config);
