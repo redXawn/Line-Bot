@@ -7,9 +7,10 @@ const line = require('@line/bot-sdk');
 const middleware = require('@line/bot-sdk').middleware
 
 const lineRoute = require('./routes/line-bot')
+const exampleRoute = require('./routes/example')
 
 const config = {
-  channelAccessToken: 'u/I+5h8Y2umj2prueCGNZZU56dMUxoMCFRHmG79bNT42BQTEqd1DukS4Vp6Z7VErwuF/Bgm4hCwX7VAqHyi13iYAu1M4+2p7ACwJI4qeYWL2tcNSPDwzSHDz2A/+VhvQNlGzbF//su0cs5fD/MSaJgdB04t89/1O/w1cDnyilFU=',
+  channelAccessToken: 'Z3qpzXo34RTfgLgYj4x2bVs/r3JcYGWmtIPtGfMGkQgSb5lVU1iwrvcHuPSOHzmAwuF/Bgm4hCwX7VAqHyi13iYAu1M4+2p7ACwJI4qeYWKiCQqStZAoFKCNbnbFdmuMVlr+6OBzFVHi4epUT8JlVgdB04t89/1O/w1cDnyilFU=',
   channelSecret: '657080c4d5f25f89e85bbe466e68acf3',
 };
 
@@ -17,7 +18,8 @@ const app = express();
 
 app.use(logger('dev'));
 
-app.use('/line', lineRoute)
+app.use('/line',line.middleware(config), lineRoute)
+app.use('/example', exampleRoute)
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => res.status(200).send({
