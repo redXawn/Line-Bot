@@ -4,42 +4,25 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const env = require('dotenv');
 const line = require('@line/bot-sdk');
+const middleware = require('@line/bot-sdk').middleware
+
+const lineRoute = require('./routes/line-bot')
+
+const config = {
+  channelAccessToken: '6JMxJk3lxVroozKbELsTnlkECPFgH+STEYuZCL7Yec/Q8Uj8XljPk33mTDfypMyoB0S1m5a2AAbOVt7XJAc1xxx9eoV6utk6onAGUArsBqWirt7OPLgrue+NJXx5UBaeKSYoPhESe/+lnQ3tU/eaVgdB04t89/1O/w1cDnyilFU=',
+  channelSecret: '7b18b21b6a1c6192897fee3ef720572f',
+};
 
 const app = express();
 
-const nodeEnv = process.env.NODE_ENV;
-let envPath
-if (nodeEnv === 'development') {
-  envPath = path.resolve('.env.development');
-} else if (nodeEnv === 'test') {
-  envPath = path.resolve('.env.test');
-} else if (nodeEnv === 'production') {
-  envPath = path.resolve('.env.production');
-}
-
-// Log requests to the console.
 app.use(logger('dev'));
-env.config({path: envPath})
 
-// Parse incoming requests data (https://github.com/expressjs/body-parser)
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use('/line', lineRoute)
+app.use(bodyParser.json())
 
-const config = {
-  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
-  channelSecret: process.env.LINE_CHANNEL_SECRET
-};
-
-// Setup a default catch-all route that sends back a welcome message in JSON format.
 app.get('/', (req, res) => res.status(200).send({
   message: 'Line Bot Example',
 }));
-
-app.post('/webhook', line.middleware(config), (req, res) => {
-  Promise
-    .all(req.body.events.map(handleEvent))
-    .then((result) => res.json(result));
-});
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
