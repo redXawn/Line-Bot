@@ -1,6 +1,5 @@
 module.exports = {
   checkStatus(req, res) {
-    console.log('asd', process.env.CHANNEL_ACCESS_TOKEN)
     res.send('ok')
   },
 
