@@ -1,48 +1,51 @@
 'use strict';
 
-const express = require('express');
-const bodyParser = require('body-parser');
 const line = require('@line/bot-sdk');
-const middleware = require('@line/bot-sdk').middleware
+const express = require('express');
 
+// create LINE SDK config from env variables
 const config = {
-  channelAccessToken: '6JMxJk3lxVroozKbELsTnlkECPFgH+STEYuZCL7Yec/Q8Uj8XljPk33mTDfypMyoB0S1m5a2AAbOVt7XJAc1xxx9eoV6utk6onAGUArsBqWirt7OPLgrue+NJXx5UBaeKSYoPhESe/+lnQ3tU/eaVgdB04t89/1O/w1cDnyilFU=',
-  channelSecret: '7b18b21b6a1c6192897fee3ef720572f',
+  channelAccessToken: 'u/I+5h8Y2umj2prueCGNZZU56dMUxoMCFRHmG79bNT42BQTEqd1DukS4Vp6Z7VErwuF/Bgm4hCwX7VAqHyi13iYAu1M4+2p7ACwJI4qeYWL2tcNSPDwzSHDz2A/+VhvQNlGzbF//su0cs5fD/MSaJgdB04t89/1O/w1cDnyilFU=',
+  channelSecret: '657080c4d5f25f89e85bbe466e68acf3',
 };
 
-const app = express();
-app.use(bodyParser.json())
-// app.use('/callback', middleware(config))
+// create LINE SDK client
+const client = new line.Client(config);
 
-app.post('/callback', (req, res) => {
-  console.log('req.body', req.body)
+// create Express app
+// about Express itself: https://expressjs.com/
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send({
+    message: 'asd'
+  })
+})
+// register a webhook handler with middleware
+// about the middleware, please refer to doc
+app.post('/callback', line.middleware(config), (req, res) => {
   Promise
     .all(req.body.events.map(handleEvent))
     .then((result) => res.json(result))
     .catch((err) => {
       console.error(err);
-      res.status(500).send({message: 'Failed'});
+      res.status(500).end();
     });
 });
 
-const client = new line.Client(config);
+// event handler
 function handleEvent(event) {
-  console.log('event', event.type, event.message.type)
   if (event.type !== 'message' || event.message.type !== 'text') {
+    // ignore non-text-message event
     return Promise.resolve(null);
   }
 
-  return client.replyMessage(event.replyToken, {
-    type: 'text',
-    text: 'asd'
-  });
-}
+  // create a echoing text message
+  const echo = { type: 'text', text: event.message.text };
 
-app.get('/', (req, res) => {
-  res.send({
-    message: 'Welcome'
-  })
-})
+  // use reply API
+  return client.replyMessage(event.replyToken, echo);
+}
 
 // listen on port
 const port = process.env.PORT || 3000;
