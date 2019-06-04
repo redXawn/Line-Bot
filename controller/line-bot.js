@@ -14,5 +14,9 @@ module.exports = {
       
     }
     axios.post('post', 'https://api.line.me/oauth2/v2.1/token', )
+  },
+
+  callback(req, res) {
+    res.send('callback')
   }
 }
