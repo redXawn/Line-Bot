@@ -1,6 +1,6 @@
 const router = require('express').Router()
-const lineBot = require('../controller/line-bot');
+const lineBotController = require('../controller/line-bot');
 
-router.get('/callback', lineBot.callback)
+router.post('/message', lineBotController.pushMessage)
 
 module.exports = router;

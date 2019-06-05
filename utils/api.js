@@ -1,24 +1,13 @@
 const axios = require('axios');
 
-module.exports = {
-  post(url, headers, body) {
-    axios({
-      method: 'POST',
-      url: url,
-      headers: {
-        authorization: headers
-      },
-      data: body
-    })
-  },
-
-  get(url, headers) {
-    axios({
-      method: 'GET',
-      url: url,
-      headers: {
-        authorization: headers
-      }
-    })
-  }
+exports.axiosHelper = (method, url, body) => { 
+  return axios({
+    method: method,
+    url: url,
+    headers: {
+      authorization: `Bearer ${process.env.LINE_CHANNEL_ACCESS}`,
+      'Content-Type': 'application/json'
+    },
+    data: body
+  })
 }

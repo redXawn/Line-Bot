@@ -1,7 +1,8 @@
 const router = require('express').Router()
-const example = require('../controller/example');
+const exampleController = require('../controller/example');
+const { lineVerifier } = require ('../utils/line-verifier')
 
-router.get('/status', example.checkStatus)
-router.post('/generate', example.generateToken)
+router.post('/status', lineVerifier, exampleController.checkStatus)
+router.post('/generate', exampleController.generateToken)
 
 module.exports = router;
