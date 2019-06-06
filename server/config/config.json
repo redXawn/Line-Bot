@@ -2,21 +2,21 @@
   "development": {
     "username": "andrew",
     "password": null,
-    "database": "line-bot-dev",
+    "database": "line-dev",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
-    "username": "root",
+    "username": "andrew",
     "password": null,
-    "database": "database_test",
+    "database": "line-dev",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
-    "username": "root",
+    "username": "andrew",
     "password": null,
-    "database": "database_production",
+    "database": "line-dev",
     "host": "127.0.0.1",
     "dialect": "postgres"
   }
