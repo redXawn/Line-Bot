@@ -5,8 +5,8 @@ exports.axiosHelper = (method, url, body) => {
     method: method,
     url: url,
     headers: {
-      authorization: `Bearer ${process.env.LINE_CHANNEL_ACCESS}`,
-      'Content-Type': 'application/json'
+      ['Content-Type']: 'application/json',
+      ['Authorization']: `Bearer ${process.env.LINE_CHANNEL_ACCESS}`,
     },
     data: body
   })

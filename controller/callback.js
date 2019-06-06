@@ -1,23 +1,23 @@
-const line = require('@line/bot-sdk');
-const { handleEvent } = require('../utils/line')
-const config = {
-  channelAccessToken: 'NQmHX/A7rF+Y7hgFipkfli8osvFvznjbd/hjKU5yvZQ1fcBdAPxFUOI93iB1+B7RwuF/Bgm4hCwX7VAqHyi13iYAu1M4+2p7ACwJI4qeYWIGR2OMAGIQQ0aW0BR4S5RqTLKRc/UZ5PmvTKzXwcseagdB04t89/1O/w1cDnyilFU=',
-  channelSecret: '657080c4d5f25f89e85bbe466e68acf3',
-};
-const client = new line.Client(config);
+const { replyMessage, newUserFollow, userUnfollow } = require('./line-bot');
 
 module.exports = {
   callback(req, res) {
-    console.log('events', req.body)
-    Promise
-      .all(req.body.events.map(handleEvent))
-      .then((result) => {
-        console.log(result)
-        res.json(result)
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).end();
-      });
-  }
+    const event = req.body.events[0]
+    switch(event.type){
+      case 'message':
+        return replyMessage(req, res, event);
+        break;
+      case 'text':
+        return replyMessage(req, res, event);
+        break;
+      case 'follow':
+        return newUserFollow(req, res, event);
+        break;
+      case 'unfollow':
+        return userUnfollow(req, res, event);
+        break;
+      default:
+        return false;
+    }
+  },
 }

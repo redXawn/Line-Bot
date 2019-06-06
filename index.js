@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const env = require('dotenv');
 
 const lineRoute = require('./routes/line-bot')
-const exampleRoute = require('./routes/example')
 const callbackRoute = require('./routes/callback')
 
 require('dotenv').config()
@@ -18,7 +17,6 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use('/line', lineRoute)
-app.use('/example', exampleRoute)
 app.use('/callback', callbackRoute)
 
 app.get('/', (req, res) => res.status(200).send({
