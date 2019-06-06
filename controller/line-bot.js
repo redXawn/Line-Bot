@@ -1,14 +1,15 @@
 const user = require('../server/models').user
 const { axiosHelper } = require('../utils/api');
 const { success, notFound, failed } = require('../utils/response')
+const { findUser } = require('../utils/models/user')
 const { pushMessageApi, getUserIdApi } = require('../services/line-services')
 
 module.exports = {
   async getUserId(req, res) {
     try {
-      const userData = await user.findOne({where: {id: req.params.id}})
+      const userData = await findUser(req, res)
       if (!userData) {
-        return notFound(req, res, userData)
+        return notFound(req, res, null)
       }
       const response = await getUserIdApi(userData.line_user_id)
       success(req, res, response.data)
@@ -19,9 +20,9 @@ module.exports = {
 
   async pushMessage(req, res) {
     try {
-      const userData = await user.findOne({where: {id: req.body.userId}})
+      const userData = await findUser(req, res)
       if (!userData) {
-        return notFound(req, res, userData)
+        return notFound(req, res, null)
       }
       const body = {
         to: userData.line_user_id,

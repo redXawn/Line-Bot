@@ -29,7 +29,7 @@ app.listen(port, () => {
 });
 
 app.use(function(req, res, next) {
-  res.status(404).send({message: 'Not Found'})
+  res.status(404).send({message: 'API Not Found'})
 });
 
 module.exports = app;

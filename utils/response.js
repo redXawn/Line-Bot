@@ -14,8 +14,7 @@ exports.notFound = (req, res, error) => {
   return res.status(404).send(
     {
       status: 404,
-      message: 'Not Found',
-      error: error
+      message: 'Not Found'
     }
   )
 }
