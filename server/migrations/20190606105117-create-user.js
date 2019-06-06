@@ -11,11 +11,17 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
+      password: {
+        type: Sequelize.STRING
+      },
       line_user_id: {
         type: Sequelize.STRING
       },
       follow: {
         type: Sequelize.BOOLEAN
+      },
+      cookies: {
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,

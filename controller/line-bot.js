@@ -1,8 +1,10 @@
-const user = require('../server/models').user
+const base64 = require('base-64');
+const moment = require('moment');
+const user = require('../server/models').user;
 const { axiosHelper } = require('../utils/api');
-const { success, notFound, failed } = require('../utils/response')
-const { findUser, updateUser } = require('../utils/models/user')
-const { pushMessageApi, getUserIdApi, replyMessageApi } = require('../services/line-services')
+const { success, notFound, failed } = require('../utils/response');
+const { findUser, updateUser } = require('../utils/models/user');
+const { pushMessageApi, getUserIdApi, replyMessageApi } = require('../services/line-services');
 
 module.exports = {
   async getUserId(req, res) {
@@ -44,13 +46,27 @@ module.exports = {
     try {
       const lineId = event.source.userId
       const userData = await findUser('line_user_id', lineId)
+      const randomPassword = Math.floor(Math.random() * 100000)
       const responseUserInfo = await getUserIdApi(lineId)
+      const cookies = base64.encode(lineId + ' ' + moment().format('L'))
       if (!userData) {
         user.create({
           name: responseUserInfo.data.displayName,
+          password: randomPassword,
           line_user_id: lineId,
-          follow: true
+          follow: true,
+          cookies
         })
+        const body = {
+          to: lineId,
+          messages:[
+            {
+              "type":"text",
+              "text": `password anda adalah ${randomPassword}, jangan sampai hilang`
+            }
+          ]
+        }
+        const response = await pushMessageApi(body)
       } else {
         userData.update({
           follow: true
@@ -80,25 +96,46 @@ module.exports = {
 
   async replyMessage(req, res, event) {
     try {
-      const lineId = event.source.userId
-      const messageFromUser = event.message.text.toLowerCase()
-      if (messageFromUser === 'help') {
-        const body = {
-          to: lineId,
-          messages:[
-            {
-              "type":"text",
-              "text": 'apa yang bisa dibantu ?'
-            }
-          ]
+      console.log('event', event)
+      const { replyToken, source, message } = event;
+      const lineId = source.userId
+      if (message.type === 'text' || message.type === 'message') {
+        const messageFromUser = message.text.toLowerCase()
+        console.log('asdasdasf', messageFromUser)
+        if (messageFromUser === 'help') {
+          const body = {
+            to: lineId,
+            messages:[
+              {
+                "type":"text",
+                "text": 'apa yang bisa dibantu ?'
+              }
+            ]
+          }
+          const response = await pushMessageApi(body)
+          success(req, res, response.data)
+        } else {
+          const userData = await findUser('line_user_id', lineId)
+          const body = {
+            replyToken,
+            messages:[
+              {
+                "type":"text",
+                "text": `Hai ${userData.name}, apa yang bisa dibantu ?`
+              },
+              {
+                "type":"text",
+                "text": `ketik help untuk melihat bantuan`
+              }
+            ]
+          }
+          const response = await replyMessageApi(body)
+          success(req, res, response.data)
         }
-        const response = await pushMessageApi(body)
-        success(req, res, response.data)
       } else {
-        console.log('masuk else')
         const userData = await findUser('line_user_id', lineId)
         const body = {
-          replyToken: event.replyToken,
+          replyToken: replyToken,
           messages:[
             {
               "type":"text",
