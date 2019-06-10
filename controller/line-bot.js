@@ -4,6 +4,21 @@ const { findUser, updateUser } = require('../utils/models/user');
 const { pushMessageApi, getUserIdApi, replyMessageApi } = require('../services/line-services');
 
 module.exports = {
+  async tes (req, res) {
+    const allUser = await user.findAll()
+    success(req, res, allUser)
+  },
+
+  async tes2 (req, res) {
+    try {
+      res.send({
+        data: 'asd'
+      })
+    } catch(error) {
+      failed(req, res, error)
+    }
+  },
+
   async getUserId(req, res) {
     try {
       const userData = await findUser('id', req.params.id)

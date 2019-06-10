@@ -46,6 +46,7 @@ module.exports = {
               ]
             }
             response = await replyMessageApi(body)
+            success(req, res, 'sucess')
           } else {
             const cookies = base64.encode(lineId + ' ' + moment().format('L'))
             userData.update({
