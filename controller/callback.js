@@ -1,8 +1,10 @@
-const { replyMessage, newUserFollow, userUnfollow } = require('./line-bot');
+const { replyMessage } = require('../services/reply-message');
+const { newUserFollow, userUnfollow } = require('./line-bot');
 
 module.exports = {
   callback(req, res) {
     const event = req.body.events[0]
+    console.log('event', event)
     switch(event.type){
       case 'message':
         return replyMessage(req, res, event);
