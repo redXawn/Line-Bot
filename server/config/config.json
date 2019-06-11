@@ -18,10 +18,12 @@
     "dialectOptions":{ "ssl": {"require":true } }
   },
   "production": {
-    "username": "andrew",
-    "password": null,
-    "database": "line-dev",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "username": "lycrcxfnuuafue",
+    "password": "cf0d412cc4c7acacc94bb65ec5f2d6d7850b0e8cdd8dafc4a633c5bda5024774",
+    "database": "d61em4ufl8rbm4",
+    "host": "ec2-54-83-192-245.compute-1.amazonaws.com",
+    "dialect": "postgres",
+    "ssl": true,
+    "dialectOptions":{ "ssl": {"require":true } }
   }
 }
