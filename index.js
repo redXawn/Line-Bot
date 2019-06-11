@@ -1,14 +1,13 @@
+
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
-const env = require('dotenv');
-
-const lineRoute = require('./routes/line-bot')
-const callbackRoute = require('./routes/callback')
-
 require('dotenv').config()
 
 const app = express();
+
+const lineRoute = require('./routes/line-bot')
+const callbackRoute = require('./routes/callback')
 
 app.use(logger('dev'));
 app.use(bodyParser.json())
@@ -22,8 +21,7 @@ app.use('/callback', callbackRoute)
 app.get('/', (req, res) => res.status(200).send({
   message: 'Line Bot Example',
 }));
-console.log('access', process.env.LINE_CHANNEL_ACCESS)
-console.log('secret', process.env.LINE_CHANNEL_SECRET)
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`server running on port ${port}`);
