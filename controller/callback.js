@@ -1,4 +1,4 @@
-const { replyMessage } = require('../services/reply-message');
+const { replyMessage } = require('./reply-message');
 const { newUserFollow, userUnfollow } = require('./line-bot');
 
 module.exports = {
