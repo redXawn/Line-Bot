@@ -19,7 +19,23 @@ module.exports = {
     const splitMessage = messageFromUser.split(' ')
     const actionType = splitMessage[0]
     console.log('actionType', actionType)
-    if (actionType === 'help') {
+    if (actionType === 'help' && userData.cookies) {
+      const body = {
+        to: lineId,
+        messages:[
+          {
+            "type":"text",
+            "text": 'Ketik "koin (kode koin)" untuk melihat harga koin'
+          },
+          {
+            "type":"text",
+            "text": 'ex koin btc'
+          }
+        ]
+      }
+      response = await pushMessageApi(body)
+      success(req, res, response.data)
+    } else if (actionType === 'help') {
       const body = {
         to: lineId,
         messages:[
@@ -94,22 +110,6 @@ module.exports = {
       }
       response = await replyMessageApi(body)
       success(req, res, 'sucess')
-    } else if (actionType === 'help' && userData.cookies) {
-      const body = {
-        to: lineId,
-        messages:[
-          {
-            "type":"text",
-            "text": 'Ketik "koin (kode koin)" untuk melihat harga koin'
-          },
-          {
-            "type":"text",
-            "text": 'ex koin btc'
-          }
-        ]
-      }
-      response = await pushMessageApi(body)
-      success(req, res, response.data)
     } else if (actionType === 'koin' && userData.cookies) {
       const coin = splitMessage[1]
       const bitcoinResponse = await bitcoin.findOne({

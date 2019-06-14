@@ -25,4 +25,4 @@ new CronJob('*/2 * * * *', function() {
   } catch(error) {
     failed(req, res, error)
   }
-}, null, true, 'Asia/Bangkok')
+}, null, false, 'Asia/Bangkok')
