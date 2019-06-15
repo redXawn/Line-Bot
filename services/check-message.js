@@ -143,18 +143,32 @@ module.exports = {
           return notFound(req, res, null)
         } else {
           const bitcoin = await getCoin(bitcoinResponse.bitcoin_code)
-          const lastPrice = parseInt(bitcoin.data.ticker.last)
-          const body = {
-            to: lineId,
-            messages:[
-              {
-                "type":"text",
-                "text": `Harga ${bitcoinResponse.bitcoin_name} sekarang adalah Rp${lastPrice.toLocaleString(['ban', 'id'])}`
-              }
-            ]
+          if (!bitcoin.data.ticker.last) {
+            const body = {
+              to: lineId,
+              messages:[
+                {
+                  "type":"text",
+                  "text": "Koin yang anda cari tidak disediakan Indodax"
+                }
+              ]
+            }
+            response = await pushMessageApi(body)
+            success(req, res, response.data)
+          } else {
+            const lastPrice = parseInt(bitcoin.data.ticker.last)
+            const body = {
+              to: lineId,
+              messages:[
+                {
+                  "type":"text",
+                  "text": `Harga ${bitcoinResponse.bitcoin_name} sekarang adalah Rp${lastPrice.toLocaleString(['ban', 'id'])}`
+                }
+              ]
+            }
+            response = await pushMessageApi(body)
+            success(req, res, response.data)
           }
-          response = await pushMessageApi(body)
-          success(req, res, response.data)
         }
       } else if (actionType === 'koin' && !userData.cookies) {
         const body = {
