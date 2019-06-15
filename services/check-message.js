@@ -143,7 +143,7 @@ module.exports = {
           return notFound(req, res, null)
         } else {
           const bitcoin = await getCoin(bitcoinResponse.bitcoin_code)
-          if (!bitcoin.data.ticker.last) {
+          if (!bitcoin.data.ticker) {
             const body = {
               to: lineId,
               messages:[
