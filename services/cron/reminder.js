@@ -11,7 +11,6 @@ module.exports = {
   reminderMessage() {
     new CronJob('*/3 * * * *', async function() {
       try {
-        console.log('send hi')
         const reminderData = await reminder.findAll(
           {
             include: [

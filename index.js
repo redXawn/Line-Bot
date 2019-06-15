@@ -9,7 +9,8 @@ const app = express();
 
 const lineRoute = require('./routes/line-bot')
 const callbackRoute = require('./routes/callback')
-const cronServices = require('./services/cron/reminder')
+const reminderCron = require('./services/cron/reminder')
+const logoutCron = require('./services/cron/logout')
 
 app.use(logger('dev'));
 app.use(bodyParser.json())
@@ -24,7 +25,8 @@ app.get('/', (req, res) => res.status(200).send({
   message: 'Line Bot Example',
 }));
 
-cronServices.reminderMessage()
+reminderCron.reminderMessage()
+logoutCron.logoutUser()
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
