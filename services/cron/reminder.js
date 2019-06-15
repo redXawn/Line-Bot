@@ -28,7 +28,7 @@ module.exports = {
         reminderData.map(async data => {
           const bitcoinResponse = await getCoin(data.bitcoin.bitcoin_code)
           const lastPrice = parseInt(bitcoinResponse.data.ticker.last)
-          if (lastPrice <= data.reminder_price) {
+          if (lastPrice <= data.reminder_price && data.active === true) {
             const body = {
               to: data.user.line_user_id,
               messages:[

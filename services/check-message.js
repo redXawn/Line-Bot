@@ -168,6 +168,36 @@ module.exports = {
         }
         response = await pushMessageApi(body)
         success(req, res, response.data)
+      } else if (actionType === 'reminder' && userData.cookies && splitMessage[1].toLowerCase() === 'off') {
+        const reminderUser = await reminder.findOne({where: {user_id: userData.id}})
+        if (!reminderUser) {
+          const body = {
+            to: lineId,
+            messages:[
+              {
+                "type":"text",
+                "text": "Anda belum mengaktifkan servis notifikasi"
+              }
+            ]
+          }
+          response = await pushMessageApi(body)
+          return notFound(req, res, null)
+        } else {
+          reminderUser.update({
+            active: false
+          })
+          const body = {
+            to: lineId,
+            messages:[
+              {
+                "type":"text",
+                "text": "Servis notifikasi berhasil dimatikan"
+              }
+            ]
+          }
+          response = await pushMessageApi(body)
+          success(req, res, response.data)
+        }
       } else if (actionType === 'reminder' && userData.cookies) {
         const coin = splitMessage[1]
         const bitcoinResponse = await bitcoin.findOne({
@@ -204,6 +234,10 @@ module.exports = {
                 {
                   "type":"text",
                   "text": `Anda akan diberi notifikasi saat harga ${bitcoinResponse.bitcoin_name} <= Rp${price.toLocaleString(['ban', 'id'])}, harga saat ini adalah Rp${lastPrice.toLocaleString(['ban', 'id'])}`
+                },
+                {
+                  "type":"text",
+                  "text": "Ketik reminder off untuk mematikan servis notifikasi"
                 }
               ]
             }
@@ -213,7 +247,8 @@ module.exports = {
             reminderUser.update({
               bitcoin_id: bitcoinResponse.id,
               last_price: lastPrice,
-              reminder_price: price
+              reminder_price: price,
+              active: true
             })
             const body = {
               to: lineId,
@@ -221,6 +256,10 @@ module.exports = {
                 {
                   "type":"text",
                   "text": `Anda akan diberi notifikasi saat harga ${bitcoinResponse.bitcoin_name} <= Rp${price.toLocaleString(['ban', 'id'])}, harga saat ini adalah Rp${lastPrice.toLocaleString(['ban', 'id'])}`
+                },
+                {
+                  "type":"text",
+                  "text": 'Ketik "reminder off" untuk mematikan servis notifikasi'
                 }
               ]
             }
