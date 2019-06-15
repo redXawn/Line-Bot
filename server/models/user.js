@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     user.hasMany(models.reminder, {
       foreignKey: 'user_id',
-      as: 'reminders',
       onDelete: 'CASCADE'
     })
   };

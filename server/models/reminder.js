@@ -10,13 +10,11 @@ module.exports = (sequelize, DataTypes) => {
   reminder.associate = function(models) {
     // associations can be defined here
     reminder.belongsTo(models.user, {
-      foreignKey: 'user_id', 
-      as: 'user', 
+      foreignKey: 'user_id',
       onDelete: 'CASCADE' 
     }),
     reminder.belongsTo(models.bitcoin, {
-      foreignKey: 'bitcoin_id', 
-      as: 'bitcoin'
+      foreignKey: 'bitcoin_id'
     })
   };
   return reminder;

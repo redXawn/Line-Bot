@@ -7,8 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   bitcoin.associate = function(models) {
     // associations can be defined here
     bitcoin.hasMany(models.reminder, {
-      foreignKey: 'bitcoin_id',
-      as: 'reminders'
+      foreignKey: 'bitcoin_id'
     })
   };
   return bitcoin;
