@@ -26,6 +26,7 @@ app.get('/', (req, res) => res.status(200).send({
 }));
 
 reminderCron.reminderMessage()
+reminderCron.genshinDaily1()
 logoutCron.logoutUser()
 
 const port = process.env.PORT || 3000;
