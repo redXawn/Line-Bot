@@ -74,7 +74,7 @@ module.exports = {
       '* * * * *',
       async function () {
         try {
-          console.log('jalan cron genshin 1');
+          console.log('jalan cron genshin 1', moment());
           const data = '{"act_id":"e202102251931481"}';
 
           const config = {
