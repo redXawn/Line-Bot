@@ -72,7 +72,7 @@ module.exports = {
   },
   genshinDaily1() {
     new CronJob(
-      '* * * * *',
+      '0 */12 * * *',
       async function () {
         try {
           console.log('jalan cron genshin 1', moment());
