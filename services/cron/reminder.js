@@ -70,36 +70,36 @@ module.exports = {
       'Asia/Bangkok'
     );
   },
-  genshinDaily1() {
-    new CronJob(
-      '0 */12 * * *',
-      async function () {
-        try {
-          console.log('jalan cron genshin 1', moment());
-          const data = '{"act_id":"e202102251931481"}';
+  // genshinDaily1() {
+  //   new CronJob(
+  //     '0 */12 * * *',
+  //     async function () {
+  //       try {
+  //         console.log('jalan cron genshin 1', moment());
+  //         const data = '{"act_id":"e202102251931481"}';
 
-          const config = {
-            method: 'post',
-            url: 'https://hk4e-api-os.mihoyo.com/event/sol/sign?lang=en-us',
-            headers: {
-              Cookie:
-                'ltoken=hxy2BW9lstDAEPwSGOWgRY3Mi3c0Wf1wvu3qWnit; ; ltoken=hxy2BW9lstDAEPwSGOWgRY3Mi3c0Wf1wvu3qWnit; ltuid=15341615',
-              'Content-Type': 'text/plain',
-            },
-            data: data,
-          };
+  //         const config = {
+  //           method: 'post',
+  //           url: 'https://hk4e-api-os.mihoyo.com/event/sol/sign?lang=en-us',
+  //           headers: {
+  //             Cookie:
+  //               'ltoken=hxy2BW9lstDAEPwSGOWgRY3Mi3c0Wf1wvu3qWnit; ; ltoken=hxy2BW9lstDAEPwSGOWgRY3Mi3c0Wf1wvu3qWnit; ltuid=15341615',
+  //             'Content-Type': 'text/plain',
+  //           },
+  //           data: data,
+  //         };
 
-          axios(config).then((response) => {
-            console.log(response);
-          });
-        } catch (error) {
-          console.log(error);
-          failed(req, res, 'Error checkin');
-        }
-      },
-      null,
-      true,
-      'Asia/Bangkok'
-    );
-  },
+  //         axios(config).then((response) => {
+  //           console.log(response);
+  //         });
+  //       } catch (error) {
+  //         console.log(error);
+  //         failed(req, res, 'Error checkin');
+  //       }
+  //     },
+  //     null,
+  //     true,
+  //     'Asia/Bangkok'
+  //   );
+  // },
 };
